@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class service {
+public class StudentService {
 
     @Autowired
     private StudentRepository repository_ob;
