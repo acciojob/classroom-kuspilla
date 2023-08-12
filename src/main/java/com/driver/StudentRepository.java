@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Repository
-public class repository {
+public class StudentRepository {
 
     public HashMap<String, Student> studentDB = new HashMap<>();
     public HashMap<String,Teacher> teacherDB = new HashMap<>();
