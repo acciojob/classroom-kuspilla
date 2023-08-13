@@ -7,40 +7,42 @@ import java.util.List;
 
 @Service
 public class StudentService {
-
-
-    private StudentRepository repository_ob = new StudentRepository();
+    @Autowired
+    private StudentRepository studentRepository;
 
     public void addStudent(Student student){
-         repository_ob.addStudent(student);
+        studentRepository.addStudent(student);
     }
+
     public void addTeacher(Teacher teacher){
-        repository_ob.addTeacher(teacher);
+        studentRepository.addTeacher(teacher);
     }
+
     public void addStudentTeacherPair(String student, String teacher){
-        repository_ob.addStudentTeacherPair(student,teacher);
+        studentRepository.addStudentTeacherPair(student,teacher);
     }
 
     public Student getStudentByName(String name){
-        Student student = repository_ob.getStudentByName(name);
-        return student;
+        return studentRepository.getStudentByName(name);
     }
-    public Teacher getTeacherByName(String Tname){
-        Teacher teacher = repository_ob.getTeacherByName(Tname);
-        return teacher;
-    }
-    public List<String> getStudentsByTeacherName(String Teacher_Name){
-        return repository_ob.getStudentsByTeacherName(Teacher_Name);
-    }
-    public List<String> getAllStudents(){
-        List<String> all_students = repository_ob.getAllStudents();
-        return all_students;
-    }
-    public void deleteTeacherByName(String Tname){
-         repository_ob.deleteTeacherByName(Tname);
 
+    public Teacher getTeacherByName(String name){
+        return studentRepository.getTeacherByName(name);
     }
+
+    public List<String> getStudentsByTeacherName(String teacher){
+        return studentRepository.getStudentsByTeacherName(teacher);
+    }
+
+    public List<String> getAllStudents(){
+        return  studentRepository.getAllStudents();
+    }
+
+    public void deleteTeacherByName(String teacher) {
+        studentRepository.deleteTeacherByName(teacher);
+    }
+
     public void deleteAllTeachers(){
-        repository_ob.deleteAllTeachers();
+        studentRepository.deleteAllTeachers();
     }
 }

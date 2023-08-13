@@ -9,69 +9,71 @@ import java.util.List;
 @Repository
 public class StudentRepository {
 
-    public HashMap<String, Student> studentDB = new HashMap<>();
-    public HashMap<String,Teacher> teacherDB = new HashMap<>();
-    public HashMap<String, List<String>> teacher_and_studentDB = new HashMap<>();
-
+    HashMap<String,Student> studentDB = new HashMap<>();
+    HashMap<String, Teacher> teacherDB = new HashMap<>();
+    HashMap<String, List<String>> teacherStudentDB = new HashMap<>();
+//    teacher names , and lists of student names .
 
     public void addStudent(Student student){
-        String St_name = student.getName();
-        studentDB.put(St_name, student);
+        studentDB.put(student.getName(),student);
     }
-
 
     public void addTeacher(Teacher teacher){
-        String t_name = teacher.getName();
-        teacherDB.put(t_name, teacher);
+        teacherDB.put(teacher.getName(),teacher);
     }
+
     public void addStudentTeacherPair(String student, String teacher){
-
-            if(teacher_and_studentDB.containsKey(teacher)){
-                teacher_and_studentDB.get(teacher).add(student);
-            }
-            else{
-                List<String> l = new ArrayList<>();
-                l.add(student);
-                teacher_and_studentDB.put(teacher,l);
-            }
-
+        if(studentDB.containsKey(student) && teacherDB.containsKey(teacher)){
+            List<String> studentList = teacherStudentDB.getOrDefault(teacher,new ArrayList<>());
+            studentList.add(student);
+            teacherStudentDB.put(teacher,studentList);
+        }
     }
+
+    //get student by name
     public Student getStudentByName(String name){
-        Student student = studentDB.get(name) ;
-         return student;
+        return studentDB.get(name);
     }
-    public Teacher getTeacherByName(String Tname){
-        Teacher teacher = teacherDB.get(Tname);
-        return teacher;
+
+    public Teacher getTeacherByName(String name){
+        return teacherDB.get(name);
     }
-    public List<String> getStudentsByTeacherName(String Teacher_name){
-        if( teacher_and_studentDB.containsKey(Teacher_name) == false){
-            return new ArrayList<>();
-        }
-        return teacher_and_studentDB.get(Teacher_name);
+    public List<String> getStudentsByTeacherName(String teacher){
+        return teacherStudentDB.getOrDefault(teacher,new ArrayList<>());
     }
+
     public List<String> getAllStudents(){
-
-        return new ArrayList<>(studentDB.keySet());
-    }
-    public void deleteTeacherByName(String Tname){
-        List<String> l = new ArrayList<>(teacher_and_studentDB.get(Tname));
-        teacher_and_studentDB.remove(Tname);
-        teacherDB.remove(Tname);
-        for(String s : l){
-            studentDB.remove(s);
+        List<String> studentList = new ArrayList<>();
+        for(String s : studentDB.keySet()){
+            studentList.add(s);
         }
+        return studentList;
+    }
 
+    public void deleteTeacherByName(String teacher){
+        // it will be present in teacher as well ass teacherStudentDB
+        if(teacherDB.containsKey(teacher)){
+            //teacher is present in teacher db
+            if(teacherStudentDB.containsKey(teacher)){
+                for(String student : teacherStudentDB.get(teacher)){
+                    studentDB.remove(student);
+                }
+                teacherStudentDB.remove(teacher);
+            }
+            teacherDB.remove(teacher);
+        }
     }
+
     public void deleteAllTeachers(){
-       List<String> l = new ArrayList<>();
-       for(String s : teacher_and_studentDB.keySet()){
-           l.addAll(teacher_and_studentDB.get(s));
-       }
-       teacher_and_studentDB.clear();
-       teacherDB.clear();
-       for(String t : l){
-           studentDB.remove(t);
-       }
+        for(String teacher:teacherDB.keySet()){
+            if(teacherStudentDB.containsKey(teacher)){
+                for(String s:teacherStudentDB.get(teacher)){
+                    studentDB.remove(s);
+                }
+                teacherStudentDB.remove(teacher);
+            }
+            teacherDB.remove(teacher);
+        }
     }
+
 }
