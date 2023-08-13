@@ -25,27 +25,15 @@ public class StudentRepository {
         teacherDB.put(t_name, teacher);
     }
     public void addStudentTeacherPair(String student, String teacher){
-        if(!teacherDB.containsKey(teacher)) return ;
-        if( !teacher_and_studentDB.containsKey(teacher)){
 
-            Teacher teacherOB = teacherDB.get(teacher);
-            int number_of_students = teacherOB.getNumberOfStudents();
-            teacherOB.setNumberOfStudents( number_of_students +1);
-            teacherDB.put(teacher, teacherOB);
-
-            teacher_and_studentDB.put(teacher, new ArrayList<>());
-            teacher_and_studentDB.get(teacher).add(student);
-            return ;
-        }
-        /*
-        first get teacher object and increase number of students and add agin updated teacher object
-        teacher_and_studentDB also add teacher key and student list add student
-         */
-        Teacher teacherOB = teacherDB.get(teacher);
-        int number_of_students = teacherOB.getNumberOfStudents();
-        teacherOB.setNumberOfStudents( number_of_students +1);
-        teacherDB.put(teacher, teacherOB);
-        teacher_and_studentDB.get(teacher).add(student);
+            if(teacher_and_studentDB.containsKey(teacher)){
+                teacher_and_studentDB.get(teacher).add(student);
+            }
+            else{
+                List<String> l = new ArrayList<>();
+                l.add(student);
+                teacher_and_studentDB.put(teacher,l);
+            }
 
     }
     public Student getStudentByName(String name){
@@ -63,21 +51,27 @@ public class StudentRepository {
         return teacher_and_studentDB.get(Teacher_name);
     }
     public List<String> getAllStudents(){
-        List<String> all_students = new ArrayList<>();
-        for( Student student : studentDB.values()){
-            all_students.add( student.getName());
-        }
-        return all_students;
+
+        return new ArrayList<>(studentDB.keySet());
     }
-    public boolean deleteTeacherByName(String Tname){
-        if(teacherDB.containsKey(Tname) == false){
-            return false;
-        }
+    public void deleteTeacherByName(String Tname){
+        List<String> l = new ArrayList<>(teacher_and_studentDB.get(Tname));
+        teacher_and_studentDB.remove(Tname);
         teacherDB.remove(Tname);
-        return true;
+        for(String s : l){
+            studentDB.remove(s);
+        }
+
     }
     public void deleteAllTeachers(){
-        teacherDB.clear();
-        teacher_and_studentDB.values();
+       List<String> l = new ArrayList<>();
+       for(String s : teacher_and_studentDB.keySet()){
+           l.addAll(teacher_and_studentDB.get(s));
+       }
+       teacher_and_studentDB.clear();
+       teacherDB.clear();
+       for(String t : l){
+           studentDB.remove(t);
+       }
     }
 }

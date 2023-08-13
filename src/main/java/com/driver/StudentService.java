@@ -36,9 +36,9 @@ public class StudentService {
         List<String> all_students = repository_ob.getAllStudents();
         return all_students;
     }
-    public  boolean deleteTeacherByName(String Tname){
-        boolean flag = repository_ob.deleteTeacherByName(Tname);
-        return flag;
+    public void deleteTeacherByName(String Tname){
+         repository_ob.deleteTeacherByName(Tname);
+
     }
     public void deleteAllTeachers(){
         repository_ob.deleteAllTeachers();

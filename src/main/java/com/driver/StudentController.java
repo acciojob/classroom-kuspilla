@@ -42,14 +42,13 @@ public class StudentController {
     @GetMapping("/get-student-by-name/{name}")
     public ResponseEntity<Student> getStudentByName(@PathVariable String name){
         Student student = service_ob.getStudentByName(name); // Assign student by calling service layer method
-        if( student == null)  return new ResponseEntity<>(student, HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(student, HttpStatus.CREATED);
     }
 
     @GetMapping("/get-teacher-by-name/{name}")
     public ResponseEntity<Teacher> getTeacherByName(@PathVariable String name){
         Teacher teacher = service_ob.getTeacherByName(name); // Assign student by calling service layer method
-        if( teacher == null)  return new ResponseEntity<>(teacher, HttpStatus.NOT_FOUND);
+
         return new ResponseEntity<>(teacher, HttpStatus.CREATED);
     }
 
@@ -69,8 +68,8 @@ public class StudentController {
 
     @DeleteMapping("/delete-teacher-by-name")
     public ResponseEntity<String> deleteTeacherByName(@RequestParam String teacher){
-           boolean flag = service_ob.deleteTeacherByName(teacher);
-           if( flag) return  new ResponseEntity<>(teacher + " Name Not Found", HttpStatus.NOT_FOUND);
+           service_ob.deleteTeacherByName(teacher);
+
         return new ResponseEntity<>(teacher + " removed successfully", HttpStatus.CREATED);
     }
     @DeleteMapping("/delete-all-teachers")
