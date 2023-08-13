@@ -17,6 +17,9 @@ public class StudentService {
     public void addTeacher(Teacher teacher){
         repository_ob.addTeacher(teacher);
     }
+    public void addStudentTeacherPair(String student, String teacher){
+        repository_ob.addStudentTeacherPair(student,teacher);
+    }
 
     public Student getStudentByName(String name){
         Student student = repository_ob.getStudentByName(name);
@@ -25,6 +28,9 @@ public class StudentService {
     public Teacher getTeacherByName(String Tname){
         Teacher teacher = repository_ob.getTeacherByName(Tname);
         return teacher;
+    }
+    public List<String> getStudentsByTeacherName(String Teacher_Name){
+        return repository_ob.getStudentsByTeacherName(Teacher_Name);
     }
     public List<String> getAllStudents(){
         List<String> all_students = repository_ob.getAllStudents();
