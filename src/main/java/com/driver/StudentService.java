@@ -8,8 +8,8 @@ import java.util.List;
 @Service
 public class StudentService {
 
-    @Autowired
-    private StudentRepository repository_ob;
+
+    private StudentRepository repository_ob = new StudentRepository();
 
     public void addStudent(Student student){
          repository_ob.addStudent(student);
